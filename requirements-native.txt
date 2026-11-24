@@ -1,0 +1,12 @@
+# Known-good, mutually compatible Qt stack for the native ProcManager window.
+# Install these into the project-local virtual environment instead of your
+# system Python:
+#
+#     ./scripts/setup-native-window.sh
+#
+# All PyQt6 / Qt libraries below come from the same Qt 6.11.2 build.
+psutil>=5.9
+PyQt6==6.11.0
+PyQt6-Qt6==6.11.2
+PyQt6-WebEngine==6.11.0
+PyQt6-WebEngine-Qt6==6.11.2

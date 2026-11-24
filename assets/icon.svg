@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="ProcManager">
+  <defs>
+    <linearGradient id="pm-bg" x1="24" y1="12" x2="232" y2="244" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#24384c"/>
+      <stop offset=".55" stop-color="#122131"/>
+      <stop offset="1" stop-color="#0a111a"/>
+    </linearGradient>
+    <linearGradient id="pm-line" x1="46" y1="128" x2="210" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a8ecff"/>
+      <stop offset=".45" stop-color="#4cc2ff"/>
+      <stop offset="1" stop-color="#1f8fff"/>
+    </linearGradient>
+    <radialGradient id="pm-glow" cx=".72" cy=".22" r=".82">
+      <stop stop-color="#4cc2ff" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#4cc2ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="pm-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#pm-bg)"/>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#pm-glow)"/>
+  <rect x="8.75" y="8.75" width="238.5" height="238.5" rx="55.25" fill="none" stroke="#ffffff" stroke-opacity=".13" stroke-width="1.5"/>
+  <path d="M46 148h33l16-55 27 97 20-69 12 27h56" fill="none" stroke="#0a111a" stroke-opacity=".6" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" filter="url(#pm-soft)"/>
+  <path d="M46 148h33l16-55 27 97 20-69 12 27h56" fill="none" stroke="url(#pm-line)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="46" cy="148" r="7.5" fill="#b6efff"/>
+  <circle cx="210" cy="148" r="7.5" fill="#4cc2ff"/>
+</svg>

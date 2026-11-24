@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en-AU" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="pm-token" content="__PM_TOKEN__">
+  <meta name="pm-version" content="__PM_VERSION__">
+  <title>ProcManager</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/boot.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-process" viewBox="0 0 24 24"><rect x="3.2" y="4" width="17.6" height="16" rx="2.4"/><path d="M3.2 8.6h17.6M8.6 8.6V20"/><path d="M11.6 12.4h6M11.6 15.8h4.6"/></symbol>
+    <symbol id="i-performance" viewBox="0 0 24 24"><path d="M3 13h3.7l2.2-6.3 3.6 12 2.6-7.3 1.7 3.6H21"/></symbol>
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><rect x="10" y="10" width="4" height="4" rx=".8"/><path d="M9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M3 15h4M17 9h4M17 15h4"/></symbol>
+    <symbol id="i-gpu" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M9 20h6M12 16.5V20M6.6 11.2h2.2l1.4-2.8 2.2 5.2 1.4-2.4h2.4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.1"/><path d="M3 19.2c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9.2" r="2.4"/><path d="M16.2 14.4c2.8.3 4.8 2.6 4.8 5.1"/></symbol>
+    <symbol id="i-details" viewBox="0 0 24 24"><circle cx="4.6" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.6" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.6" cy="18" r="1.1" fill="currentColor" stroke="none"/><path d="M8.6 6h11.8M8.6 12h11.8M8.6 18h11.8"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2.3"/><circle cx="15" cy="17" r="2.3"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.5 15.5L20.5 20.5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19.8 12a7.8 7.8 0 1 1-2.28-5.52"/><path d="M19.8 4.2v4.4h-4.4"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.5" height="14" rx="1.2" fill="currentColor" stroke="none"/><rect x="13.5" y="5" width="3.5" height="14" rx="1.2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.8l10.2 6.2L8 18.2z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M9 9l6 6M15 9l-6 6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6.5 9.5l5.5 5.5 5.5-5.5"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M14.5 6.5L9 12l5.5 5.5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.2 8.2 0 1 0 10.2 10.2z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.8 12.4l4.6 4.6L19.4 6.8"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.4L2.8 19.5a1.2 1.2 0 0 0 1.05 1.8h16.3a1.2 1.2 0 0 0 1.05-1.8z"/><path d="M12 8.6v5.1M12 17.2v.1"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10.6v5.2M12 7.5v.1"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.8" y="8.8" width="11.2" height="11.2" rx="2"/><path d="M15.2 5.6V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8.2a2 2 0 0 0 2 2h.6"/></symbol>
+    <symbol id="i-memory" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="9" rx="2"/><path d="M7 16v3M11 16v3M15 16v3M17.5 10.5h.1M6.5 10.5h6"/></symbol>
+    <symbol id="i-disk" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><path d="M3 14.2h18"/><circle cx="17.2" cy="9.6" r="1.1" fill="currentColor" stroke="none"/><path d="M6.5 17.1h4"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><path d="M3.2 9.1a13 13 0 0 1 17.6 0M6.4 12.7a8.4 8.4 0 0 1 11.2 0M9.5 16.2a4.2 4.2 0 0 1 5 0"/><circle cx="12" cy="19.3" r="1.2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2.8" y="7" width="16.2" height="10" rx="2.2"/><path d="M21.2 10.4v3.2M6.2 10.2v3.6M9.6 10.2v3.6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M12 7.2V12l3.2 2"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4.4" width="18" height="15.2" rx="2.2"/><path d="M7 9.2l3 2.8-3 2.8M12.5 15h4.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.2 2.9v5.1c0 4.5-3 7.7-7.2 9.4-4.2-1.7-7.2-4.9-7.2-9.4V5.7z"/><path d="M9.1 11.8l2 2 3.9-4.2"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.8 12s3.5-6 9.2-6 9.2 6 9.2 6-3.5 6-9.2 6-9.2-6-9.2-6z"/><circle cx="12" cy="12" r="2.7"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19.5v-15M5.8 10.7L12 4.5l6.2 6.2"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4.5v15M5.8 13.3L12 19.5l6.2-6.2"/></symbol>
+    <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none"/></symbol>
+  </svg>
+
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">
+        <div class="brand-text">
+          <span class="brand-name">ProcManager</span>
+          <span class="brand-sub">Process Manager</span>
+        </div>
+        <button class="icon-btn brand-collapse" id="sidebar-toggle" type="button" title="Collapse sidebar" aria-label="Collapse sidebar">
+          <svg class="ic"><use href="#i-chevron-left"></use></svg>
+        </button>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-item active" type="button" data-view="processes" title="Processes">
+          <svg class="ic"><use href="#i-process"></use></svg><span class="nav-label">Processes</span>
+        </button>
+        <button class="nav-item" type="button" data-view="performance" title="Performance">
+          <svg class="ic"><use href="#i-performance"></use></svg><span class="nav-label">Performance</span>
+        </button>
+        <button class="nav-item" type="button" data-view="hardware" title="Hardware">
+          <svg class="ic"><use href="#i-chip"></use></svg><span class="nav-label">Hardware</span>
+        </button>
+        <div class="nav-sep"></div>
+        <button class="nav-item" type="button" data-view="users" title="Users">
+          <svg class="ic"><use href="#i-users"></use></svg><span class="nav-label">Users</span>
+        </button>
+        <button class="nav-item" type="button" data-view="details" title="Details">
+          <svg class="ic"><use href="#i-details"></use></svg><span class="nav-label">Details</span>
+        </button>
+        <button class="nav-item" type="button" data-view="settings" title="Settings">
+          <svg class="ic"><use href="#i-settings"></use></svg><span class="nav-label">Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sf-status">
+          <span class="live-dot" id="sidebar-live-dot"></span>
+          <div class="sf-text">
+            <span class="sf-title" id="sidebar-host">This device</span>
+            <span class="sf-sub" id="sidebar-status">Connecting…</span>
+          </div>
+        </div>
+        <div class="sf-meta sf-text">
+          <span id="sidebar-os">Linux</span>
+          <span class="sf-version">v<span id="sidebar-version">1.0.0</span></span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title">
+          <h1 id="page-title">Processes</h1>
+          <p id="page-subtitle">Monitor and manage processes on this computer</p>
+        </div>
+        <div class="top-actions">
+          <label class="searchbox" id="search-wrap">
+            <svg class="ic search-ic"><use href="#i-search"></use></svg>
+            <input id="search-input" type="text" autocomplete="off" spellcheck="false" placeholder="Search processes (name, PID or user)" aria-label="Search processes">
+            <button class="search-clear" id="search-clear" type="button" title="Clear search" aria-label="Clear search" hidden>
+              <svg class="ic"><use href="#i-close"></use></svg>
+            </button>
+          </label>
+          <button class="icon-btn top-btn" id="refresh-btn" type="button" title="Refresh now (F5)" aria-label="Refresh now">
+            <svg class="ic"><use href="#i-refresh"></use></svg>
+          </button>
+          <button class="icon-btn top-btn" id="theme-btn" type="button" title="Toggle theme" aria-label="Toggle theme">
+            <svg class="ic"><use href="#i-sun"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="content" id="content">
+        <div class="connection-banner" id="connection-banner" hidden>
+          <svg class="ic"><use href="#i-alert"></use></svg>
+          <span id="connection-text">Cannot reach the local service. Retrying…</span>
+        </div>
+
+        <!-- ---------------------------------------------------------- -->
+        <section class="view active" id="view-processes" data-view="processes">
+          <div class="summary-grid" id="summary-grid">
+            <button class="summary-card" type="button" data-resource="cpu">
+              <div class="sc-top">
+                <span class="sc-icon"><svg class="ic"><use href="#i-performance"></use></svg></span>
+                <span class="sc-label">CPU</span>
+              </div>
+              <div class="sc-value" id="sum-cpu">—</div>
+              <div class="sc-sub" id="sum-cpu-sub">Collecting…</div>
+              <canvas class="spark" id="spark-cpu" aria-hidden="true"></canvas>
+            </button>
+            <button class="summary-card" type="button" data-resource="memory">
+              <div class="sc-top">
+                <span class="sc-icon"><svg class="ic"><use href="#i-memory"></use></svg></span>
+                <span class="sc-label">Memory</span>
+              </div>
+              <div class="sc-value" id="sum-memory">—</div>
+              <div class="sc-sub" id="sum-memory-sub">Collecting…</div>
+              <canvas class="spark" id="spark-memory" aria-hidden="true"></canvas>
+            </button>
+            <button class="summary-card" type="button" data-resource="disk">
+              <div class="sc-top">
+                <span class="sc-icon"><svg class="ic"><use href="#i-disk"></use></svg></span>
+                <span class="sc-label">Disk</span>
+              </div>
+              <div class="sc-value" id="sum-disk">—</div>
+              <div class="sc-sub" id="sum-disk-sub">Collecting…</div>
+              <canvas class="spark" id="spark-disk" aria-hidden="true"></canvas>
+            </button>
+            <button class="summary-card" type="button" data-resource="network">
+              <div class="sc-top">
+                <span class="sc-icon"><svg class="ic"><use href="#i-network"></use></svg></span>
+                <span class="sc-label">Network</span>
+              </div>
+              <div class="sc-value small" id="sum-network">—</div>
+              <div class="sc-sub" id="sum-network-sub">Collecting…</div>
+              <canvas class="spark" id="spark-network" aria-hidden="true"></canvas>
+            </button>
+            <button class="summary-card" type="button" data-resource="gpu" id="sum-card-gpu">
+              <div class="sc-top">
+                <span class="sc-icon"><svg class="ic"><use href="#i-gpu"></use></svg></span>
+                <span class="sc-label">GPU</span>
+              </div>
+              <div class="sc-value" id="sum-gpu">—</div>
+              <div class="sc-sub" id="sum-gpu-sub">Collecting…</div>
+              <canvas class="spark" id="spark-gpu" aria-hidden="true"></canvas>
+            </button>
+          </div>
+
+          <div class="table-card">
+            <div class="table-toolbar">
+              <div class="toolbar-left">
+                <span class="toolbar-title">Processes</span>
+                <span class="toolbar-count" id="proc-count-label">—</span>
+              </div>
+              <div class="toolbar-actions">
+                <span class="selection-label" id="selection-label" hidden></span>
+                <button class="btn" id="btn-suspend" type="button" disabled>
+                  <svg class="ic"><use href="#i-pause"></use></svg><span id="btn-suspend-label">Suspend</span>
+                </button>
+                <button class="btn danger" id="btn-end" type="button" disabled>
+                  <svg class="ic"><use href="#i-stop"></use></svg>End task
+                </button>
+              </div>
+            </div>
+            <div class="table-scroll" id="process-scroll">
+              <table class="data-table process-table" id="process-table" aria-label="Process list">
+                <thead>
+                  <tr>
+                    <th class="col-name"><button class="th-sort" type="button" data-sort="name">Name<span class="sort-ind"></span></button></th>
+                    <th class="col-status"><button class="th-sort" type="button" data-sort="status">Status<span class="sort-ind"></span></button></th>
+                    <th class="col-cpu num"><button class="th-sort" type="button" data-sort="cpu">CPU<span class="sort-ind"></span></button></th>
+                    <th class="col-memory num"><button class="th-sort" type="button" data-sort="memory">Memory<span class="sort-ind"></span></button></th>
+                    <th class="col-disk num"><button class="th-sort" type="button" data-sort="disk">Disk<span class="sort-ind"></span></button></th>
+                    <th class="col-user"><button class="th-sort" type="button" data-sort="user">User<span class="sort-ind"></span></button></th>
+                  </tr>
+                </thead>
+                <tbody id="process-tbody">
+                  <tr class="empty-row"><td colspan="6"><div class="empty-cell"><span class="spinner small"></span>Reading processes…</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div class="tf-left">
+                <span id="proc-footer-count">—</span>
+                <button class="kernel-chip" id="kernel-toggle" type="button" hidden title="Show or hide kernel threads">
+                  <svg class="ic"><use href="#i-eye"></use></svg><span id="kernel-chip-text"></span>
+                </button>
+              </div>
+              <div class="tf-right">
+                <span class="live-dot"></span>
+                <span id="last-updated">Waiting for data</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------- -->
+        <section class="view scrollable" id="view-performance" data-view="performance">
+          <div class="perf-layout">
+            <div class="card resource-list" role="tablist" aria-label="Resources">
+              <button class="resource-item active" type="button" data-resource="cpu" role="tab" aria-selected="true">
+                <span class="ri-icon"><svg class="ic"><use href="#i-performance"></use></svg></span>
+                <span class="ri-main">
+                  <span class="ri-label">CPU</span>
+                  <span class="ri-value" id="res-cpu-value">—</span>
+                  <span class="ri-sub" id="res-cpu-sub">—</span>
+                </span>
+                <canvas class="ri-spark" id="res-spark-cpu" aria-hidden="true"></canvas>
+              </button>
+              <button class="resource-item" type="button" data-resource="memory" role="tab" aria-selected="false">
+                <span class="ri-icon"><svg class="ic"><use href="#i-memory"></use></svg></span>
+                <span class="ri-main">
+                  <span class="ri-label">Memory</span>
+                  <span class="ri-value" id="res-memory-value">—</span>
+                  <span class="ri-sub" id="res-memory-sub">—</span>
+                </span>
+                <canvas class="ri-spark" id="res-spark-memory" aria-hidden="true"></canvas>
+              </button>
+              <button class="resource-item" type="button" data-resource="disk" role="tab" aria-selected="false">
+                <span class="ri-icon"><svg class="ic"><use href="#i-disk"></use></svg></span>
+                <span class="ri-main">
+                  <span class="ri-label">Disk</span>
+                  <span class="ri-value" id="res-disk-value">—</span>
+                  <span class="ri-sub" id="res-disk-sub">—</span>
+                </span>
+                <canvas class="ri-spark" id="res-spark-disk" aria-hidden="true"></canvas>
+              </button>
+              <button class="resource-item" type="button" data-resource="network" role="tab" aria-selected="false">
+                <span class="ri-icon"><svg class="ic"><use href="#i-network"></use></svg></span>
+                <span class="ri-main">
+                  <span class="ri-label">Network</span>
+                  <span class="ri-value" id="res-network-value">—</span>
+                  <span class="ri-sub" id="res-network-sub">—</span>
+                </span>
+                <canvas class="ri-spark" id="res-spark-network" aria-hidden="true"></canvas>
+              </button>
+              <button class="resource-item" type="button" data-resource="gpu" id="res-item-gpu" role="tab" aria-selected="false">
+                <span class="ri-icon"><svg class="ic"><use href="#i-gpu"></use></svg></span>
+                <span class="ri-main">
+                  <span class="ri-label">GPU</span>
+                  <span class="ri-value" id="res-gpu-value">—</span>
+                  <span class="ri-sub" id="res-gpu-sub">—</span>
+                </span>
+                <canvas class="ri-spark" id="res-spark-gpu" aria-hidden="true"></canvas>
+              </button>
+            </div>
+
+            <div class="perf-detail">
+              <!-- CPU -->
+              <div class="perf-panel active" id="perf-panel-cpu" data-resource-panel="cpu">
+                <div class="card panel-card">
+                  <div class="panel-head">
+                    <div class="panel-title-group">
+                      <span class="panel-icon"><svg class="ic"><use href="#i-performance"></use></svg></span>
+                      <div>
+                        <h2>CPU</h2>
+                        <p id="perf-cpu-name">Reading processor information…</p>
+                      </div>
+                    </div>
+                    <div class="panel-big">
+                      <span id="perf-cpu-big">—</span>
+                      <small id="perf-cpu-big-sub">—</small>
+                    </div>
+                  </div>
+                  <div class="chart-wrap" data-chart="cpu">
+                    <canvas id="chart-cpu" aria-label="CPU usage history"></canvas>
+                    <div class="chart-tooltip" hidden></div>
+                  </div>
+                  <div class="chart-caption">Up to 60 seconds · overall CPU usage</div>
+                  <div class="stat-grid" id="perf-cpu-stats"></div>
+                  <div class="hw-line" id="perf-cpu-hw"></div>
+                </div>
+                <div class="card panel-card">
+                  <div class="section-head">
+                    <h3>Logical processors</h3>
+                    <span id="perf-cpu-cores-label">—</span>
+                  </div>
+                  <div class="core-grid" id="core-grid"></div>
+                </div>
+              </div>
+
+              <!-- Memory -->
+              <div class="perf-panel" id="perf-panel-memory" data-resource-panel="memory">
+                <div class="card panel-card">
+                  <div class="panel-head">
+                    <div class="panel-title-group">
+                      <span class="panel-icon purple"><svg class="ic"><use href="#i-memory"></use></svg></span>
+                      <div>
+                        <h2>Memory</h2>
+                        <p id="perf-memory-subtitle">Physical memory usage</p>
+                      </div>
+                    </div>
+                    <div class="panel-big">
+                      <span id="perf-memory-big">—</span>
+                      <small id="perf-memory-big-sub">—</small>
+                    </div>
+                  </div>
+                  <div class="chart-wrap" data-chart="memory">
+                    <canvas id="chart-memory" aria-label="Memory usage history"></canvas>
+                    <div class="chart-tooltip" hidden></div>
+                  </div>
+                  <div class="chart-caption">Up to 60 seconds · memory usage</div>
+                  <div class="memory-bars" id="memory-bars"></div>
+                  <div class="stat-grid" id="perf-memory-stats"></div>
+                  <div class="hw-line" id="perf-memory-hw"></div>
+                </div>
+              </div>
+
+              <!-- Disk -->
+              <div class="perf-panel" id="perf-panel-disk" data-resource-panel="disk">
+                <div class="card panel-card">
+                  <div class="panel-head">
+                    <div class="panel-title-group">
+                      <span class="panel-icon teal"><svg class="ic"><use href="#i-disk"></use></svg></span>
+                      <div>
+                        <h2>Disk</h2>
+                        <p id="perf-disk-subtitle">Storage activity and capacity</p>
+                      </div>
+                    </div>
+                    <div class="panel-big">
+                      <span id="perf-disk-big">—</span>
+                      <small id="perf-disk-big-sub">—</small>
+                    </div>
+                  </div>
+                  <div class="chart-wrap" data-chart="disk">
+                    <canvas id="chart-disk" aria-label="Disk throughput history"></canvas>
+                    <div class="chart-tooltip" hidden></div>
+                  </div>
+                  <div class="chart-caption">
+                    <span>Up to 60 seconds · read/write throughput</span>
+                    <span class="legend"><i class="legend-dot blue"></i>Read <i class="legend-dot orange"></i>Write</span>
+                  </div>
+                  <div class="stat-grid" id="perf-disk-stats"></div>
+                  <div class="partition-list" id="disk-partitions"></div>
+                  <div class="hw-line" id="perf-disk-hw"></div>
+                </div>
+              </div>
+
+              <!-- Network -->
+              <div class="perf-panel" id="perf-panel-network" data-resource-panel="network">
+                <div class="card panel-card">
+                  <div class="panel-head">
+                    <div class="panel-title-group">
+                      <span class="panel-icon green"><svg class="ic"><use href="#i-network"></use></svg></span>
+                      <div>
+                        <h2>Network</h2>
+                        <p id="perf-network-subtitle">Network adapters and throughput</p>
+                      </div>
+                    </div>
+                    <div class="panel-big">
+                      <span id="perf-network-big">—</span>
+                      <small id="perf-network-big-sub">—</small>
+                    </div>
+                  </div>
+                  <div class="chart-wrap" data-chart="network">
+                    <canvas id="chart-network" aria-label="Network throughput history"></canvas>
+                    <div class="chart-tooltip" hidden></div>
+                  </div>
+                  <div class="chart-caption">
+                    <span>Up to 60 seconds · upload/download</span>
+                    <span class="legend"><i class="legend-dot green"></i>Download <i class="legend-dot purple"></i>Upload</span>
+                  </div>
+                  <div class="stat-grid" id="perf-network-stats"></div>
+                  <div class="adapter-list" id="network-adapters"></div>
+                </div>
+              </div>
+
+              <!-- GPU -->
+              <div class="perf-panel" id="perf-panel-gpu" data-resource-panel="gpu">
+                <div class="card panel-card">
+                  <div class="panel-head">
+                    <div class="panel-title-group">
+                      <span class="panel-icon amber"><svg class="ic"><use href="#i-gpu"></use></svg></span>
+                      <div>
+                        <h2>GPU</h2>
+                        <p id="perf-gpu-subtitle">Graphics processor</p>
+                      </div>
+                    </div>
+                    <div class="panel-big">
+                      <span id="perf-gpu-big">—</span>
+                      <small id="perf-gpu-big-sub">—</small>
+                    </div>
+                  </div>
+                  <div class="chart-wrap" data-chart="gpu">
+                    <canvas id="chart-gpu" aria-label="GPU history"></canvas>
+                    <div class="chart-tooltip" hidden></div>
+                  </div>
+                  <div class="chart-caption" id="gpu-chart-caption">Up to 60 seconds</div>
+                  <div class="stat-grid" id="perf-gpu-stats"></div>
+                  <div class="hw-note" id="perf-gpu-note" hidden></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------- -->
+        <section class="view scrollable" id="view-hardware" data-view="hardware">
+          <div class="hardware-hero card">
+            <div class="hh-main">
+              <img src="/icon.svg" alt="" width="56" height="56" class="hh-logo">
+              <div class="hh-text">
+                <h2 id="hw-machine">Reading device information…</h2>
+                <p id="hw-machine-sub">ProcManager · hardware overview</p>
+                <div class="hh-badges" id="hw-badges"></div>
+              </div>
+            </div>
+            <button class="btn" id="copy-hardware" type="button">
+              <svg class="ic"><use href="#i-copy"></use></svg>Copy hardware info
+            </button>
+          </div>
+          <div class="hardware-grid" id="hardware-grid">
+            <div class="card hw-card"><div class="hw-card-head"><span class="hw-icon"><svg class="ic"><use href="#i-chip"></use></svg></span><h3>Processor</h3></div><div class="hw-rows" id="hw-cpu"></div></div>
+            <div class="card hw-card"><div class="hw-card-head"><span class="hw-icon purple"><svg class="ic"><use href="#i-memory"></use></svg></span><h3>Memory</h3></div><div class="hw-rows" id="hw-memory"></div></div>
+            <div class="card hw-card"><div class="hw-card-head"><span class="hw-icon teal"><svg class="ic"><use href="#i-disk"></use></svg></span><h3>Storage</h3></div><div class="hw-rows" id="hw-storage"></div></div>
+            <div class="card hw-card"><div class="hw-card-head"><span class="hw-icon amber"><svg class="ic"><use href="#i-gpu"></use></svg></span><h3>Graphics</h3></div><div class="hw-rows" id="hw-gpu"></div></div>
+            <div class="card hw-card"><div class="hw-card-head"><span class="hw-icon"><svg class="ic"><use href="#i-shield"></use></svg></span><h3>Motherboard &amp; BIOS</h3></div><div class="hw-rows" id="hw-board"></div></div>
+            <div class="card hw-card"><div class="hw-card-head"><span class="hw-icon green"><svg class="ic"><use href="#i-network"></use></svg></span><h3>Network adapters</h3></div><div class="hw-rows" id="hw-network"></div></div>
+            <div class="card hw-card" id="hw-battery-card"><div class="hw-card-head"><span class="hw-icon green"><svg class="ic"><use href="#i-battery"></use></svg></span><h3>Battery</h3></div><div class="hw-rows" id="hw-battery"></div></div>
+            <div class="card hw-card"><div class="hw-card-head"><span class="hw-icon"><svg class="ic"><use href="#i-terminal"></use></svg></span><h3>System</h3></div><div class="hw-rows" id="hw-system"></div></div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------- -->
+        <section class="view scrollable" id="view-users" data-view="users">
+          <div class="users-overview" id="users-overview"></div>
+          <div class="users-grid" id="users-grid"></div>
+          <div class="card kernel-summary" id="users-kernel" hidden></div>
+          <div class="view-note">
+            <svg class="ic"><use href="#i-info"></use></svg>
+            <span>Process resources are grouped by signed-in user; service accounts are listed separately. “Memory RSS” is the sum of resident memory for that user’s processes, so shared pages can be counted more than once and the total can exceed system-wide usage shown on the Performance page. Some data for service accounts and kernel threads may be unavailable due to permissions.</span>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------- -->
+        <section class="view" id="view-details" data-view="details">
+          <div class="table-card">
+            <div class="table-toolbar">
+              <div class="toolbar-left">
+                <span class="toolbar-title">All processes</span>
+                <span class="toolbar-count" id="details-count-label">—</span>
+              </div>
+              <div class="toolbar-actions">
+                <span class="detail-hint">Double-click a row for details · cumulative I/O from /proc/[pid]/io</span>
+              </div>
+            </div>
+            <div class="table-scroll" id="details-scroll">
+              <table class="data-table details-table" id="details-table" aria-label="Process details">
+                <thead>
+                  <tr>
+                    <th class="col-name"><button class="th-sort" type="button" data-sort="name">Name<span class="sort-ind"></span></button></th>
+                    <th class="col-pid num"><button class="th-sort" type="button" data-sort="pid">PID<span class="sort-ind"></span></button></th>
+                    <th class="col-status"><button class="th-sort" type="button" data-sort="status">Status<span class="sort-ind"></span></button></th>
+                    <th class="col-user"><button class="th-sort" type="button" data-sort="user">User<span class="sort-ind"></span></button></th>
+                    <th class="col-cpu num"><button class="th-sort" type="button" data-sort="cpu">CPU<span class="sort-ind"></span></button></th>
+                    <th class="col-memory num"><button class="th-sort" type="button" data-sort="memory">Memory<span class="sort-ind"></span></button></th>
+                    <th class="col-vmem num"><button class="th-sort" type="button" data-sort="virtual">Virtual memory<span class="sort-ind"></span></button></th>
+                    <th class="col-threads num"><button class="th-sort" type="button" data-sort="threads">Threads<span class="sort-ind"></span></button></th>
+                    <th class="col-io num"><button class="th-sort" type="button" data-sort="disk_read">Read<span class="sort-ind"></span></button></th>
+                    <th class="col-io num"><button class="th-sort" type="button" data-sort="disk_write">Write<span class="sort-ind"></span></button></th>
+                    <th class="col-created"><button class="th-sort" type="button" data-sort="created">Started<span class="sort-ind"></span></button></th>
+                  </tr>
+                </thead>
+                <tbody id="details-tbody">
+                  <tr class="empty-row"><td colspan="11"><div class="empty-cell"><span class="spinner small"></span>Reading processes…</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div class="tf-left"><span id="details-footer-count">—</span></div>
+              <div class="tf-right"><span class="live-dot"></span><span id="details-last-updated">Waiting for data</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------- -->
+        <section class="view scrollable" id="view-settings" data-view="settings">
+          <div class="settings-grid">
+            <div class="card settings-card">
+              <div class="settings-head"><span class="settings-icon"><svg class="ic"><use href="#i-sun"></use></svg></span><div><h3>Appearance</h3><p>Theme and sidebar</p></div></div>
+              <div class="setting-row">
+                <div class="setting-label"><span>Theme</span><small>Change the color scheme for the whole app</small></div>
+                <div class="segmented" id="theme-choice">
+                  <button type="button" data-theme-choice="dark"><svg class="ic"><use href="#i-moon"></use></svg>Dark</button>
+                  <button type="button" data-theme-choice="light"><svg class="ic"><use href="#i-sun"></use></svg>Light</button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label"><span>Collapse sidebar</span><small>Show only navigation icons to free up space</small></div>
+                <label class="switch"><input type="checkbox" id="setting-sidebar"><span class="switch-track"></span></label>
+              </div>
+            </div>
+
+            <div class="card settings-card">
+              <div class="settings-head"><span class="settings-icon"><svg class="ic"><use href="#i-clock"></use></svg></span><div><h3>Refresh</h3><p>Control how often the interface reads data</p></div></div>
+              <div class="setting-row">
+                <div class="setting-label"><span>Refresh interval</span><small>Backend sampling is fixed at 1 second; this only changes UI refresh</small></div>
+                <div class="segmented" id="interval-choice">
+                  <button type="button" data-interval="1000">1 second</button>
+                  <button type="button" data-interval="2000">2 seconds</button>
+                  <button type="button" data-interval="5000">5 seconds</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card settings-card">
+              <div class="settings-head"><span class="settings-icon"><svg class="ic"><use href="#i-details"></use></svg></span><div><h3>Process actions</h3><p>Protection options when ending processes</p></div></div>
+              <div class="setting-row">
+                <div class="setting-label"><span>Confirm before ending tasks</span><small>Show a confirmation dialog before ending a process</small></div>
+                <label class="switch"><input type="checkbox" id="setting-confirm"><span class="switch-track"></span></label>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label"><span>Show kernel threads</span><small>Also list kworker and other kernel threads</small></div>
+                <label class="switch"><input type="checkbox" id="setting-kernel"><span class="switch-track"></span></label>
+              </div>
+            </div>
+
+            <div class="card settings-card">
+              <div class="settings-head"><span class="settings-icon"><svg class="ic"><use href="#i-info"></use></svg></span><div><h3>About</h3><p>ProcManager desktop process manager</p></div></div>
+              <div class="about-app">
+                <img src="/icon.svg" alt="" width="44" height="44">
+                <div><strong>ProcManager</strong><span>Version <span id="about-version">1.0.0</span> · Local</span></div>
+              </div>
+              <div class="about-meta">
+                <span class="chip"><svg class="ic"><use href="#i-shield"></use></svg>127.0.0.1 only</span>
+                <span class="chip"><svg class="ic"><use href="#i-clock"></use></svg>1-second sampling</span>
+              </div>
+              <p class="settings-note">All data comes from local <code>/proc</code>, <code>/sys</code> and psutil. Memory and disk capacities use 1024-based units, matching Windows Task Manager.</p>
+            </div>
+
+            <div class="card settings-card span-2">
+              <div class="settings-head"><span class="settings-icon"><svg class="ic"><use href="#i-performance"></use></svg></span><div><h3>Data notes</h3><p>Accuracy and what the dashes mean</p></div></div>
+              <ul class="accuracy-list">
+                <li><strong>Process CPU</strong> is normalized by the number of logical processors and shown as a percentage of total machine CPU, matching Windows Task Manager.</li>
+                <li><strong>Disk I/O</strong> and per-process I/O come from kernel counters. Processes owned by other users may show “—” because <code>/proc/[pid]/io</code> is restricted.</li>
+                <li><strong>Network</strong> is the combined rate of all non-loopback interfaces. Wi-Fi adapters often do not report link speed, so it is shown as “—”.</li>
+                <li><strong>Memory type/speed</strong> needs root access to DMI. When running as a normal user both fields show “—”; this is expected.</li>
+                <li><strong>GPU</strong> utilization depends on the driver. Intel Xe does not expose global utilization, so ProcManager shows the requested GPU frequency and labels it clearly.</li>
+                <li>Ending root processes requires running ProcManager as root. ProcManager itself and PID 1/2 are protected.</li>
+              </ul>
+              <div class="shortcuts">
+                <span><kbd>Ctrl</kbd>+<kbd>F</kbd> Search</span>
+                <span><kbd>Delete</kbd> End selected process</span>
+                <span><kbd>Enter</kbd> View details</span>
+                <span><kbd>F5</kbd> Refresh now</span>
+                <span><kbd>Esc</kbd> Close overlays</span>
+              </div>
+              <button class="btn" id="reset-settings" type="button">Restore defaults</button>
+            </div>
+          </div>
+          <div class="view-note">
+            <svg class="ic"><use href="#i-shield"></use></svg>
+            <span>ProcManager runs locally and protects write actions with a per-run token. Make sure your work is saved before ending a process.</span>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="scrim" id="drawer-scrim"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Process details">
+    <div class="drawer-head">
+      <span class="drawer-tile" id="drawer-tile">?</span>
+      <div class="drawer-id">
+        <h2 id="drawer-name">Process details</h2>
+        <p id="drawer-sub">PID —</p>
+      </div>
+      <button class="icon-btn" id="drawer-refresh" type="button" title="Refresh details" aria-label="Refresh details"><svg class="ic"><use href="#i-refresh"></use></svg></button>
+      <button class="icon-btn" id="drawer-close" type="button" title="Close" aria-label="Close"><svg class="ic"><use href="#i-close"></use></svg></button>
+    </div>
+    <div class="drawer-actions">
+      <button class="btn danger" id="drawer-end" type="button"><svg class="ic"><use href="#i-stop"></use></svg>End task</button>
+      <button class="btn" id="drawer-suspend" type="button"><svg class="ic"><use href="#i-pause"></use></svg><span id="drawer-suspend-label">Suspend</span></button>
+      <button class="btn" id="drawer-copy-pid" type="button"><svg class="ic"><use href="#i-copy"></use></svg>Copy PID</button>
+    </div>
+    <div class="drawer-body" id="drawer-body">
+      <div class="drawer-loading"><span class="spinner"></span>Reading process details…</div>
+    </div>
+  </aside>
+
+  <div class="context-menu" id="context-menu" role="menu" hidden></div>
+
+  <dialog class="modal" id="end-dialog">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span class="modal-icon"><svg class="ic"><use href="#i-alert"></use></svg></span>
+        <div><h2 id="end-title">End process?</h2><p id="end-text">—</p></div>
+      </div>
+      <div class="modal-warning" id="end-warning" hidden></div>
+      <div class="modal-actions">
+        <button class="btn" id="end-cancel" type="button">Cancel</button>
+        <button class="btn danger-outline" id="end-force" type="button">Force end</button>
+        <button class="btn danger-solid" id="end-confirm" type="button">End task</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <div class="boot-overlay" id="boot-overlay">
+    <img src="/icon.svg" alt="" width="68" height="68">
+    <div class="boot-name">ProcManager</div>
+    <div class="boot-text" id="boot-text">Connecting to the local monitoring service…</div>
+    <span class="spinner"></span>
+  </div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

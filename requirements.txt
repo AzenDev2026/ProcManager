@@ -1,0 +1,3 @@
+# ProcManager core runtime.  The UI opens in a Chromium app window or your
+# default browser; no Python GUI toolkit is required.
+psutil>=5.9
